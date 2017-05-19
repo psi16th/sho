@@ -146,7 +146,7 @@ void draw(){
       rx = right.x;
       
       // calc speed
-      speed += (calcSpeed(lx, ly, llx, lly) + calcSpeed(rx, ry, lry, lrx))/750;
+      speed += (calcSpeed(lx, ly, llx, lly) + calcSpeed(rx, ry, lry, lrx))/1000;
       
       // get last hands positions
       lly = ly;
