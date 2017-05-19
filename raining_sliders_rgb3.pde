@@ -140,7 +140,7 @@ void draw(){
     if(context.isTrackingSkeleton(userList[i])){
       context.getJointPositionSkeleton(userList[i], SimpleOpenNI.SKEL_LEFT_HAND, left);
       context.getJointPositionSkeleton(userList[i], SimpleOpenNI.SKEL_RIGHT_HAND, right);
-      context.getJointPositionSkeleton(userList[i], SimpleOpenNI.SKEL_RIGHT_HAND, head);
+      context.getJointPositionSkeleton(userList[i], SimpleOpenNI.SKEL_HEAD, head);
       
       // get hands positions
       ly = (left.y)/2 + 150;
