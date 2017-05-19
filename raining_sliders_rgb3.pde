@@ -3,6 +3,7 @@ Spot foo[] = new Spot[75];
 import SimpleOpenNI.*;
 SimpleOpenNI  context;
 
+
 float zoomF = 0.5f;
 float rotX = radians(0);
 float rotY = radians(0);
