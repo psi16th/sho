@@ -7,8 +7,8 @@ SimpleOpenNI  context;
 float zoomF = 0.5f;
 float rotX = radians(0);
 float rotY = radians(0);
-int sizeX = 1200;
-int sizeY = 800;
+int sizeX = displayWidth;
+int sizeY = displayHeight;
 
 int r1 = 170;
 int g1 = 201;
@@ -34,6 +34,7 @@ float speed;
 // take hand pos
 PVector left = new PVector();
 PVector right = new PVector();
+PVector head = new PVector();
 float ly;
 float lly = 0.0;
 float lx;
@@ -42,7 +43,8 @@ float ry;
 float lry = 0.0;
 float rx;
 float lrx = 0.0;
-int X=0;
+float hx = 0.0;
+float lhx = 0.0;
 
 
 void setup(){
@@ -50,7 +52,7 @@ void setup(){
   context.enableDepth();
   context.enableUser(); 
   
-  size(sizeX,sizeY);
+  size(displayWidth,displayHeight);
   
   perspective(radians(45), float(width)/float(height), 10, 150000);
   background(0);
@@ -72,9 +74,9 @@ void setup(){
   for(int i=0;i<foo.length;i++) {
     // create a random colour.  By limiting r and g and setting a minimum for b we should get a selection of blues
     // while I adjusted color for the circles later, i couldn't delete this area without losing it all
-   int r = (int) random(100);
-   int g = (int) random(100);
-   int b = 155 + (int) random(100);
+   int r = (int) random(255);
+   int g = (int) random(255);
+   int b = (int) random(255);
    color colour = color(r,g,b);
    // create the Spot objects:
    foo[i] = new Spot(random(2*width),0,random(maxRadius), colour);
@@ -138,12 +140,23 @@ void draw(){
     if(context.isTrackingSkeleton(userList[i])){
       context.getJointPositionSkeleton(userList[i], SimpleOpenNI.SKEL_LEFT_HAND, left);
       context.getJointPositionSkeleton(userList[i], SimpleOpenNI.SKEL_RIGHT_HAND, right);
+      context.getJointPositionSkeleton(userList[i], SimpleOpenNI.SKEL_RIGHT_HAND, head);
       
       // get hands positions
       ly = (left.y)/2 + 150;
       lx = left.x;
       ry = (right.y)/2 + 150;
       rx = right.x;
+      hx = head.x
+      
+      // chage spots direction
+      for (int i =0; i<foo.length; i++) {
+        if ((hx + 50.0) > (lhx)) {
+          foo[i].posite();
+        } else if ((hx + 50.0) < lhx){
+          foo[i].negate();
+        }
+      }
       
       // calc speed
       speed += (calcSpeed(lx, ly, llx, lly) + calcSpeed(rx, ry, lry, lrx))/1000;
@@ -153,6 +166,7 @@ void draw(){
       llx = lx;
       lry = ry;
       lrx = rx;
+      lhx = hx;
       
       if (left.dist(right) < 80){
         mouseClicked();
@@ -234,15 +248,6 @@ void draw(){
      g2 = ((255*X)/width);
    }   
          
-  // chage spots direction
-  for (int i =0; i<foo.length; i++) {
-    if ((lx + rx)> (llx + lrx)) {
-      foo[i].posite();
-    } else if (mouseX < llx){
-      foo[i].negate();
-    }
-   }
-
   // display the spots:
   for(int i=0;i<foo.length;i++) {
     foo[i].display();
@@ -323,9 +328,9 @@ class Spot {
    // If they go beyond the bottom of the screen one option is to simply place them back at the top:
    if(y > height *1.5  + (maxRadius * 5)) {
      // by resetting all these it will look like a different ball
-     int r = (int) random(100);
-     int g = (int) random(100);
-     int b = 155 + (int) random(100);
+     int r = (int) random(255);
+     int g = (int) random(255);
+     int b = (int) random(255);
      colour = color(r,g,b);
      radius = 1+random(30);
      vx = random(-1,1);  // create small random horizontal velocity
