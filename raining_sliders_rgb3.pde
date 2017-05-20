@@ -45,6 +45,7 @@ float rx;
 float lrx = 0.0;
 float hx = 0.0;
 float lhx = 0.0;
+int X;
 
 
 void setup(){
@@ -147,14 +148,14 @@ void draw(){
       lx = left.x;
       ry = (right.y)/2 + 150;
       rx = right.x;
-      hx = head.x
+      hx = head.x;
       
       // chage spots direction
-      for (int i =0; i<foo.length; i++) {
+      for (int j =0; j<foo.length; j++) {
         if ((hx + 50.0) > (lhx)) {
-          foo[i].posite();
+          foo[j].posite();
         } else if ((hx + 50.0) < lhx){
-          foo[i].negate();
+          foo[j].negate();
         }
       }
       
